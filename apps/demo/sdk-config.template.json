@@ -1,0 +1,18 @@
+{
+  "theme": "light",
+  "authConfig": {
+    "authService": "pega",
+    "mashupClientId": "${PEGA_MASHUP_CLIENT_ID}",
+    "mashupUserIdentifier": "${PEGA_MASHUP_USER_IDENTIFIER}",
+    "mashupPassword": "${PEGA_MASHUP_PASSWORD_BASE64}",
+    "portalClientId": "${PEGA_MASHUP_CLIENT_ID}"
+  },
+  "serverConfig": {
+    "infinityRestServerUrl": "${PEGA_SERVER_URL}",
+    "appAlias": "${PEGA_APP_ALIAS}",
+    "sdkContentServerUrl": "",
+    "appMashupCaseType": "${PEGA_CASE_TYPE}",
+    "excludePortals": ["pxExpress", "Developer", "pxPredictionStudio", "pxAdminStudio", "pyCaseWorker", "pyCaseManager7"],
+    "showModalsInEmbeddedMode": true
+  }
+}

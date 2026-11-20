@@ -1,0 +1,46 @@
+{
+  "name": "@swapnil-srivastava/constellation-embed",
+  "version": "0.1.0",
+  "description": "Embed a Pega Constellation case (create case, RootContainer, flow, assignment) in any Angular app, built on @pega/angular-sdk-components.",
+  "license": "Apache-2.0",
+  "keywords": [
+    "angular",
+    "constellation",
+    "embedded",
+    "mashup"
+  ],
+  "sideEffects": [
+    "*.scss",
+    "*.css"
+  ],
+  "scripts": {
+    "build": "ng-packagr -p ng-package.json -c tsconfig.lib.prod.json",
+    "dev": "ng-packagr -p ng-package.json -c tsconfig.lib.json --watch",
+    "clean": "rm -rf dist"
+  },
+  "peerDependencies": {
+    "@angular/common": "^21.2.4",
+    "@angular/core": "^21.2.4",
+    "@angular/material": "^21.2.2",
+    "@pega/angular-sdk-components": "~26.1.10",
+    "@pega/auth": "^1.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.8.1"
+  },
+  "devDependencies": {
+    "@angular/cdk": "~21.2.14",
+    "@angular/common": "~21.2.26",
+    "@angular/compiler": "~21.2.26",
+    "@angular/compiler-cli": "~21.2.26",
+    "@angular/core": "~21.2.26",
+    "@angular/material": "~21.2.14",
+    "@pega/angular-sdk-components": "~26.1.10",
+    "@pega/auth": "^1.0.2",
+    "ng-packagr": "~21.2.7",
+    "typescript": "~5.9.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

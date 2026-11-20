@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.angular/
+.turbo/
+*.tsbuildinfo
+
+# Pega connection details: never commit
+.env
+.env.*
+!.env.example
+apps/*/public/sdk-config.json

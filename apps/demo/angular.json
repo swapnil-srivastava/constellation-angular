@@ -1,0 +1,128 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "analytics": false,
+    "packageManager": "pnpm"
+  },
+  "newProjectRoot": "projects",
+  "projects": {
+    "demo": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "outputPath": "dist",
+            "index": "src/index.html",
+            "browser": "src/main.ts",
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              },
+              {
+                "glob": "bootstrap-shell.*",
+                "input": "node_modules/@pega/constellationjs/dist",
+                "output": "constellation"
+              },
+              {
+                "glob": "lib_asset.json",
+                "input": "node_modules/@pega/constellationjs/dist",
+                "output": "constellation"
+              },
+              {
+                "glob": "constellation-core.*",
+                "input": "node_modules/@pega/constellationjs/dist",
+                "output": "constellation/prerequisite"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@pega/constellationjs/dist/js",
+                "output": "constellation/prerequisite/js"
+              },
+              {
+                "glob": "*.svg",
+                "input": "node_modules/@swapnil-srivastava/constellation-embed/assets/icons",
+                "output": "constellation/assets/icons"
+              },
+              {
+                "glob": "auth.html",
+                "input": "node_modules/@pega/auth/lib/oauth-client",
+                "output": "/"
+              },
+              {
+                "glob": "authDone.{html,js}",
+                "input": "node_modules/@pega/auth/lib/oauth-client",
+                "output": "/"
+              }
+            ],
+            "styles": [
+              "@danielmoncada/angular-datetime-picker/assets/style/picker.min.css",
+              "src/styles.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules"
+              ]
+            },
+            "allowedCommonJsDependencies": [
+              "dayjs",
+              "lodash.clonedeep",
+              "lodash.debounce",
+              "downloadjs",
+              "moment",
+              "libphonenumber-js",
+              "fast-deep-equal"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "5mb",
+                  "maximumError": "8mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "8kb",
+                  "maximumError": "16kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "demo:build:production"
+            },
+            "development": {
+              "buildTarget": "demo:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        }
+      }
+    }
+  }
+}

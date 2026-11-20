@@ -1,0 +1,90 @@
+// Global styles the Pega Angular SDK components expect.
+// Adapted from pegasystems/angular-sdk v26.1.10 src/styles.scss (Apache-2.0).
+// Changes: renamed imports, removed the Google Fonts and date-picker CSS imports (load those in the host app).
+@use './container';
+@use './themes';
+
+html,
+body {
+  height: 100%;
+  background-color: var(--mat-sys-background);
+  color: var(--mat-sys-on-background);
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  @include themes.generate-theme-vars();
+}
+
+button.mat-mdc-menu-item {
+  line-height: 24px !important;
+}
+a.mat-mdc-menu-item > mat-icon {
+  margin-bottom: 14px;
+}
+.mat-icon svg {
+  height: 24px;
+  width: 24px;
+}
+.mat-step-icon-content .mat-icon svg {
+  height: 100%;
+  width: 100%;
+}
+
+.mat-mdc-card {
+  padding: 16px;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled),
+.mat-mdc-form-field-focus-overlay {
+  background-color: transparent !important;
+}
+
+.mdc-text-field {
+  padding: 0 !important;
+}
+
+.psdk-radio-vertical > .mat-mdc-radio-button .mdc-radio {
+  padding: 10px 0 !important;
+}
+
+.mat-sort-header-content {
+  justify-content: space-between;
+  width: 100%;
+}
+.mat-sort-header-container {
+  justify-content: space-between;
+}
+
+.psdk-grid-filter {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: calc(2 * 0.5rem);
+  row-gap: calc(2 * 0.5rem);
+  align-items: start;
+}
+
+.psdk-grid-label {
+  color: var(--mat-sys-on-background);
+}
+.psdk-value {
+  margin: 8px 0px;
+}
+
+.mdc-button {
+  line-height: inherit !important;
+}
+
+.mat-mdc-form-field {
+  margin: 8px 0;
+}
+
+.pega-part-of-page .psdk-flow-container-top {
+  max-width: 1400px;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 16px;
+}
+
+.pega-part-of-page .psdk-horizontal-stepper-header-container {
+  display: none !important;
+}

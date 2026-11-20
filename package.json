@@ -1,0 +1,17 @@
+{
+  "name": "constellation-angular",
+  "private": true,
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "start": "turbo run start --filter=demo...",
+    "clean": "turbo run clean"
+  },
+  "devDependencies": {
+    "turbo": "^2.11.13"
+  }
+}

@@ -1,0 +1,20 @@
+@swapnil-srivastava/constellation-embed
+Copyright 2026 Swapnil Srivastava
+
+This package contains code and assets adapted from pegasystems/angular-sdk
+(https://github.com/pegasystems/angular-sdk), tag v26.1.10, licensed under the
+Apache License, Version 2.0. Copyright Pegasystems Inc.
+
+Adapted files:
+- src/lib/constellation-bootstrap.service.ts and src/lib/embed-case.component.ts:
+  ported from src/app/_samples/embedded/embedded.component.ts and
+  main-screen/main-screen.component.ts (MediaCo sample UI removed, made configurable).
+- src/lib/auth.ts: ported from src/app/_samples/embedded/utils.ts.
+- styles/constellation.scss, styles/_themes.scss, styles/_container.scss:
+  from src/styles.scss, src/themes.scss, src/containerStyles.scss.
+- assets/icons/*.svg: copied unchanged from src/assets/icons.
+
+This package is not affiliated with or endorsed by Pegasystems Inc.
+"Pega" and "Constellation" are trademarks of Pegasystems Inc.
+It does not include or redistribute @pega/constellationjs, which is licensed
+separately under the ConstellationJS Engine License.
