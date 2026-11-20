@@ -43,6 +43,8 @@ Library code and assets are adapted from [pegasystems/angular-sdk](https://githu
 
 ## Deploy the demo to Vercel
 
+Live demo: https://constellation-angular-swapnil-srivastavas-projects-c9797073.vercel.app (redeploys on every push to `main`).
+
 `vercel.json` builds the demo (and the library first) and serves `apps/demo/dist/browser`.
 Set these in Vercel → Project → Settings → Environment Variables: `PEGA_SERVER_URL`, `PEGA_MASHUP_CLIENT_ID`, and optionally `PEGA_APP_ALIAS`, `PEGA_CASE_TYPE`.
 Without them the build still succeeds but `sdk-config.json` is a placeholder and login won't work.
