@@ -1,0 +1,93 @@
+# Publishes @swapnil-srivastava/constellation-angular after CI passes on main.
+# It publishes only when the version in packages/constellation-angular/package.json
+# is not on npm yet, then creates the v<version> tag and GitHub release.
+# Run it by hand from the Actions tab for a dry run.
+# Needs the repository secret NPM_TOKEN.
+name: Release
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (build and pack, do not publish)'
+        type: boolean
+        default: true
+
+permissions:
+  contents: write # tag and GitHub release
+  id-token: write # npm provenance
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
+    runs-on: ubuntu-latest
+    env:
+      SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+      DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.SHA }}
+
+      - name: Is this version already on npm?
+        id: version
+        run: |
+          NAME=$(node -p "require('./packages/constellation-angular/package.json').name")
+          VERSION=$(node -p "require('./packages/constellation-angular/package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if npm view "$NAME@$VERSION" version >/dev/null 2>&1; then
+            echo "$NAME@$VERSION is already on npm. Nothing to release."
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "$NAME@$VERSION is new."
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: pnpm/action-setup@v4
+        if: steps.version.outputs.publish == 'true' || env.DRY_RUN == 'true'
+      - uses: actions/setup-node@v4
+        if: steps.version.outputs.publish == 'true' || env.DRY_RUN == 'true'
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Build library
+        if: steps.version.outputs.publish == 'true' || env.DRY_RUN == 'true'
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm --filter @swapnil-srivastava/constellation-angular build
+
+      - name: Dry run
+        if: env.DRY_RUN == 'true'
+        working-directory: packages/constellation-angular/dist
+        run: npm publish --access public --dry-run
+
+      - name: Publish to npm
+        if: steps.version.outputs.publish == 'true' && env.DRY_RUN != 'true'
+        working-directory: packages/constellation-angular/dist
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public --provenance
+
+      - name: Create tag and GitHub release
+        if: steps.version.outputs.publish == 'true' && env.DRY_RUN != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: v${{ steps.version.outputs.version }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists."
+          else
+            gh release create "$TAG" --target "$SHA" --title "$TAG" --generate-notes
+          fi
