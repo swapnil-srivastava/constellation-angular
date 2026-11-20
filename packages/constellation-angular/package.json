@@ -3,6 +3,12 @@
   "version": "0.1.0",
   "description": "Embed a Pega Constellation case (create case, RootContainer, flow, assignment) in any Angular app, built on @pega/angular-sdk-components.",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swapnil-srivastava/constellation-angular.git",
+    "directory": "packages/constellation-angular"
+  },
+  "homepage": "https://github.com/swapnil-srivastava/constellation-angular#readme",
   "keywords": [
     "angular",
     "constellation",
