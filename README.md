@@ -40,3 +40,10 @@ Always publish from `dist/`, which ng-packagr generates with the right entry poi
 
 Library code and assets are adapted from [pegasystems/angular-sdk](https://github.com/pegasystems/angular-sdk) v26.1.10 (Apache-2.0); see `packages/constellation-angular/NOTICE`.
 `@pega/constellationjs` (ConstellationJS Engine License) is a dev dependency of the app only and is never bundled into the library.
+
+## Deploy the demo to Vercel
+
+`vercel.json` builds the demo (and the library first) and serves `apps/demo/dist/browser`.
+Set these in Vercel → Project → Settings → Environment Variables: `PEGA_SERVER_URL`, `PEGA_MASHUP_CLIENT_ID`, and optionally `PEGA_APP_ALIAS`, `PEGA_CASE_TYPE`.
+Without them the build still succeeds but `sdk-config.json` is a placeholder and login won't work.
+In Pega, add `https://<your-vercel-domain>/auth.html` as an OAuth redirect URI and allow CORS from that domain.
