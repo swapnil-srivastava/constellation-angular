@@ -34,7 +34,10 @@ type Status = 'idle' | 'running' | 'cancelled' | 'completed' | 'failed';
           <p class="demo-message">Case cancelled.</p>
         }
         @case ('failed') {
-          <p class="demo-message">Could not start the case. Check the browser console and sdk-config.json.</p>
+          <p class="demo-message">
+            Could not start the case{{ caseType ? ' ' + caseType : '' }}. Open the failed "cases" request in the
+            Network tab and check its Response.
+          </p>
         }
         @default {
           <p class="demo-message">Press "Start case" to create a case on your Pega server.</p>
@@ -49,8 +52,11 @@ type Status = 'idle' | 'running' | 'cancelled' | 'completed' | 'failed';
   `
 })
 export class AppComponent {
-  /** Set your case type class here, or in .env as PEGA_CASE_TYPE. */
-  readonly caseType = '';
+  /**
+   * Case type class to create. Empty uses PEGA_CASE_TYPE from sdk-config.json.
+   * For quick tests you can override it in the URL: ?caseType=ORG-App-Work-MyCase
+   */
+  readonly caseType = new URLSearchParams(window.location.search).get('caseType') ?? '';
   readonly status = signal<Status>('idle');
 
   start(): void {
