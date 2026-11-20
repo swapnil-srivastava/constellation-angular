@@ -94,6 +94,12 @@ pnpm start                               # demo on http://localhost:3500 (needs 
 
 The library must be built before the demo compiles (`turbo` handles this through `^build`).
 
+## Pull requests and releases
+
+- PR titles follow Conventional Commits (`feat(demo): add plan cards`, `fix: ...`, `chore: ...`; `!` after the type marks a breaking change). PRs are squash-merged, so the title becomes the commit on main. CI checks it.
+- If a PR changes `packages/constellation-angular` (other than `*.md` and `*.spec.ts`) and its type is `feat`, `fix`, `perf` or breaking, bump `version` in `packages/constellation-angular/package.json` in the same PR: `fix`/`perf` patch, `feat` minor, breaking major (minor while below 1.0.0). CI checks it.
+- After CI passes on main, the Release workflow publishes the package to npm if that version is not there yet, and creates the `v<version>` tag and GitHub release. Never publish by hand.
+
 ## Working style
 
 - Start from a spec in `docs/specs/` and refer to requirements by ID (CX-01 and so on).
