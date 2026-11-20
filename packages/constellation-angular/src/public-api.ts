@@ -1,5 +1,5 @@
 /*
- * Public API of @swapnil-srivastava/constellation-embed
+ * Public API of @swapnil-srivastava/constellation-angular
  */
 export * from './lib/types';
 export * from './lib/provide-constellation';

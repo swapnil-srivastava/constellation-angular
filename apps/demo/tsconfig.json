@@ -15,7 +15,7 @@
     "module": "preserve",
     "moduleResolution": "bundler",
     "paths": {
-      "@swapnil-srivastava/constellation-embed": ["../../packages/constellation-embed/dist"]
+      "@swapnil-srivastava/constellation-angular": ["../../packages/constellation-angular/dist"]
     }
   },
   "angularCompilerOptions": {

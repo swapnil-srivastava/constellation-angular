@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { EmbedCaseComponent } from '@swapnil-srivastava/constellation-embed';
+import { EmbedCaseComponent } from '@swapnil-srivastava/constellation-angular';
 
 type Status = 'idle' | 'running' | 'cancelled' | 'completed' | 'failed';
 

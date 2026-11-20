@@ -1,5 +1,5 @@
 {
-  "name": "@swapnil-srivastava/constellation-embed",
+  "name": "@swapnil-srivastava/constellation-angular",
   "version": "0.1.0",
   "description": "Embed a Pega Constellation case (create case, RootContainer, flow, assignment) in any Angular app, built on @pega/angular-sdk-components.",
   "license": "Apache-2.0",

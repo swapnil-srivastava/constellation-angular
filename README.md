@@ -1,10 +1,10 @@
-# constellation-angular
+# constellation-angular (monorepo)
 
 Turborepo (pnpm) for embedding Pega Constellation cases in Angular.
 
 | Path | What it is |
 | --- | --- |
-| `packages/constellation-embed` | `@swapnil-srivastava/constellation-embed`, a publishable Angular library (ng-packagr). Wraps Pega's `@pega/angular-sdk-components`: login, PCore bootstrap, create case, RootContainer. |
+| `packages/constellation-angular` | `@swapnil-srivastava/constellation-angular`, a publishable Angular library (ng-packagr). Wraps Pega's `@pega/angular-sdk-components`: login, PCore bootstrap, create case, RootContainer. |
 | `apps/demo` | Angular 21 app that consumes the library and starts a case. |
 
 Pinned to Pega Angular SDK **26.1.10** (Infinity '26), Angular **21.2**, pnpm **10**, Node **22.12+** (Pega tests with Node 24).
@@ -26,17 +26,17 @@ On the Pega side, the OAuth 2.0 client registration needs `http://localhost:3500
 
 ```bash
 pnpm build                                          # turbo: library first (^build), then app
-cd packages/constellation-embed/dist && npm publish # publishes @swapnil-srivastava/constellation-embed
+cd packages/constellation-angular/dist && npm publish # publishes @swapnil-srivastava/constellation-angular
 ```
 
 Always publish from `dist/`, which ng-packagr generates with the right entry points.
 
 ## How the app consumes the library
 
-- In the workspace, `apps/demo/tsconfig.json` maps the package name to `packages/constellation-embed/dist`, so the app uses the built output exactly as npm consumers will.
-- Outside the workspace, `pnpm add @swapnil-srivastava/constellation-embed @pega/angular-sdk-components @pega/auth` and copy the asset globs from `apps/demo/angular.json`.
+- In the workspace, `apps/demo/tsconfig.json` maps the package name to `packages/constellation-angular/dist`, so the app uses the built output exactly as npm consumers will.
+- Outside the workspace, `pnpm add @swapnil-srivastava/constellation-angular @pega/angular-sdk-components @pega/auth` and copy the asset globs from `apps/demo/angular.json`.
 
 ## Credits and licences
 
-Library code and assets are adapted from [pegasystems/angular-sdk](https://github.com/pegasystems/angular-sdk) v26.1.10 (Apache-2.0); see `packages/constellation-embed/NOTICE`.
+Library code and assets are adapted from [pegasystems/angular-sdk](https://github.com/pegasystems/angular-sdk) v26.1.10 (Apache-2.0); see `packages/constellation-angular/NOTICE`.
 `@pega/constellationjs` (ConstellationJS Engine License) is a dev dependency of the app only and is never bundled into the library.

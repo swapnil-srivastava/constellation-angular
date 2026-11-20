@@ -53,7 +53,7 @@
               },
               {
                 "glob": "*.svg",
-                "input": "node_modules/@swapnil-srivastava/constellation-embed/assets/icons",
+                "input": "node_modules/@swapnil-srivastava/constellation-angular/assets/icons",
                 "output": "constellation/assets/icons"
               },
               {

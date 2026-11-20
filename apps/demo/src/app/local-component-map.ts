@@ -1,4 +1,4 @@
-import { LocalComponentMap } from '@swapnil-srivastava/constellation-embed';
+import { LocalComponentMap } from '@swapnil-srivastava/constellation-angular';
 
 /**
  * Custom and override components. Keys are Constellation component names

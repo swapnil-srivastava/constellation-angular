@@ -1,11 +1,11 @@
-# @swapnil-srivastava/constellation-embed
+# @swapnil-srivastava/constellation-angular
 
 Embed a Pega Constellation case in any Angular 21 app. Built on Pega's `@pega/angular-sdk-components` 26.1.x (Infinity '26), which supplies RootContainer, FlowContainer, Assignment and all field components.
 
 ## Install
 
 ```bash
-pnpm add @swapnil-srivastava/constellation-embed @pega/angular-sdk-components@~26.1.10 @pega/auth @angular/material
+pnpm add @swapnil-srivastava/constellation-angular @pega/angular-sdk-components@~26.1.10 @pega/auth @angular/material
 pnpm add -D @pega/constellationjs@~26.1.0
 ```
 
@@ -29,7 +29,7 @@ bootstrapApplication(AppComponent, {
 
 ```scss
 // styles.scss
-@use '@swapnil-srivastava/constellation-embed/styles/constellation';
+@use '@swapnil-srivastava/constellation-angular/styles/constellation';
 ```
 
 | API | Purpose |

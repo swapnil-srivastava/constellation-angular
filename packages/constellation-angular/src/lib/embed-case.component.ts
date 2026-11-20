@@ -63,7 +63,7 @@ export class EmbedCaseComponent implements OnInit, OnDestroy {
       await this.createCase();
       this.started.emit();
     } catch (err) {
-      console.error('[constellation-embed]', err);
+      console.error('[constellation-angular]', err);
       this.error.set(err instanceof Error ? err.message : 'Could not start the case.');
       this.failed.emit(err);
     }

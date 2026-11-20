@@ -50,9 +50,9 @@ importers:
       '@pega/auth':
         specifier: ^1.0.2
         version: 1.0.2
-      '@swapnil-srivastava/constellation-embed':
+      '@swapnil-srivastava/constellation-angular':
         specifier: workspace:*
-        version: link:../../packages/constellation-embed
+        version: link:../../packages/constellation-angular
       rxjs:
         specifier: ~7.8.2
         version: 7.8.2
@@ -76,7 +76,7 @@ importers:
         specifier: ~5.9.3
         version: 5.9.3
 
-  packages/constellation-embed:
+  packages/constellation-angular:
     dependencies:
       tslib:
         specifier: ^2.8.1
