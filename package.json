@@ -9,7 +9,9 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "start": "turbo run start --filter=demo...",
-    "clean": "turbo run clean"
+    "clean": "turbo run clean",
+    "test": "turbo run test",
+    "lint": "turbo run lint"
   },
   "devDependencies": {
     "turbo": "^2.11.13"
