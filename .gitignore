@@ -9,3 +9,6 @@ dist/
 .env.*
 !.env.example
 apps/*/public/sdk-config.json
+
+# Written by pnpm verify (.claude/hooks/mark-verified.mjs)
+.claude/.verified

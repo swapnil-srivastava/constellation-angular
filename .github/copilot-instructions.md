@@ -88,11 +88,23 @@ pnpm install
 pnpm build                               # library, then demo
 pnpm lint                                # ESLint (angular-eslint, template a11y rules)
 pnpm test                                # Vitest
+pnpm verify                              # lint, test and build; required before push
 pnpm --filter demo test                  # demo tests only
 pnpm start                               # demo on http://localhost:3500 (needs apps/demo/.env)
 ```
 
 The library must be built before the demo compiles (`turbo` handles this through `^build`).
+
+## Development workflow
+
+Every component, override or other change goes through these six steps in order. In Claude Code, invoke the named skill at each step; other assistants follow the same steps.
+
+1. **Spec.** Start from a template in `docs/specs/` and refer to requirements by CX ID. Skills: `superpowers:brainstorming`, then `superpowers:writing-plans`.
+2. **Build.** Write the `*.spec.ts` first (the states listed under Tests), see it fail, then write the component. Skill: `superpowers:test-driven-development`.
+3. **Accessibility check.** Review every new or overridden field for a visible label, keyboard operation and `aria-describedby`. Skill: `design:accessibility-review`.
+4. **Verify.** Run `pnpm verify` (lint, test and build) and show its output before saying the work is done. Skill: `superpowers:verification-before-completion`. A hook in `.claude/settings.json` blocks `git push` and PR creation until `pnpm verify` has passed on exactly the committed code.
+5. **PR review.** Run `/code-review medium` before opening a PR. Also run `/security-review` if the change touches `packages/constellation-angular/src/lib/auth.ts`, `sdk-config` handling or `.github/workflows/`. Fix each finding or explain it in the PR. The Claude Code Review workflow also reviews every PR on GitHub.
+6. **Release.** Before a PR that bumps `version` in `packages/constellation-angular/package.json`, run `engineering:deploy-checklist`.
 
 ## Pull requests and releases
 
