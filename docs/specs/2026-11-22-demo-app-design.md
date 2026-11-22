@@ -8,7 +8,7 @@ Scope: `apps/demo` only. The npm package (`packages/constellation-angular`) is n
 The demo is shown to a Dutch bank (engineering lead, CTO, platform lead). Today the app looks unfinished: no theme is applied, the copy is written for developers, and a few accessibility basics are missing. The goal is a start screen and case states that look like a real customer journey, without touching how the case itself is rendered.
 
 ## Goals
-1. **Theme (fix 1).** Apply one Material 3 theme to the whole app in `apps/demo/src/styles.scss`, so every `--mat-sys-*` token is set. This styles the header, buttons and all Pega SDK fields.
+1. **Theme (fix 1).** Today the start screen has no theme: the package only adds the `light` (violet) class to `<body>` once the case starts, from `theme` in `sdk-config.json`. Define a bank theme class (`.polder`) with `mat.theme()` in `apps/demo/src/styles.scss`, put it on `<body>` in `index.html` so the start screen is themed, and set `"theme": "polder"` in `sdk-config.template.json` so the package keeps that class when it boots. This styles the header, buttons and all Pega SDK fields the same way before and after Start.
 2. **Start screen and states (fix 4).** Replace developer copy with a product-like page:
    - Header: fictional bank name and logo mark (text only), no real bank's branding.
    - Idle: `h1` title, one line about the journey, primary "Start" button in the page body.
@@ -28,7 +28,7 @@ The demo is shown to a Dutch bank (engineering lead, CTO, platform lead). Today 
 - Changing how cases are created or submitted.
 
 ## Approaches considered
-- **A. Theme only through Material tokens (chosen).** `mat.theme()` with a custom navy/teal palette on `html`. Every SDK component picks it up because they read the same tokens.
+- **A. Theme only through Material tokens (chosen).** `mat.theme()` with a navy/teal palette on a `.polder` body class. Every SDK component picks it up because they read the same tokens.
 - B. Hand-written CSS overrides per component. More control, but fragile against SDK updates and much more code.
 - C. Use the package's existing `.light` or `.mediaco` class. Cheapest, but not bank-like (violet or magenta).
 
