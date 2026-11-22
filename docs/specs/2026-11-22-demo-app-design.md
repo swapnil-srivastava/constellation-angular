@@ -1,7 +1,7 @@
 # Design: demo app accessibility and neutral copy
 
 Requirement IDs: CX-01, CX-02 (the create and submit flow this wraps)
-Status: draft, waiting for Swapnil's approval
+Status: approved by Swapnil, 2026-11-22
 Scope: `apps/demo` app shell only (`app.component.ts`, `index.html`). No change to `packages/constellation-angular`.
 
 ## Why
