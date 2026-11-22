@@ -6,8 +6,11 @@ import { mkdtempSync, rmSync, copyFileSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
+// Hooks run with CLAUDE_PROJECT_DIR set to the repo; `pnpm verify` runs from the repo root.
+const cwd = process.env.CLAUDE_PROJECT_DIR || process.cwd();
+
 export const git = (args, env = process.env) =>
-  execFileSync('git', args, { encoding: 'utf8', env }).trim();
+  execFileSync('git', args, { encoding: 'utf8', env, cwd }).trim();
 
 export const repoRoot = () => git(['rev-parse', '--show-toplevel']);
 
