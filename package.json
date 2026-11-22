@@ -11,7 +11,8 @@
     "start": "turbo run start --filter=demo...",
     "clean": "turbo run clean",
     "test": "turbo run test",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "verify": "turbo run lint test build && node .claude/hooks/mark-verified.mjs"
   },
   "devDependencies": {
     "turbo": "^2.11.13"
