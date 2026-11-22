@@ -5,7 +5,7 @@ Status: draft, waiting for Swapnil's approval
 Scope: `apps/demo` app shell only (`app.component.ts`, `index.html`). No change to `packages/constellation-angular`.
 
 ## Why
-The demo is shown to a Dutch bank. Swapnil (2026-11-22): the case is a Pega case and its look and content come from the Pega configuration, so the package stays as it is and whatever is configured in Pega must show through. The visual UI comes later. For now the app that hosts the case should follow sound style and accessibility guidelines itself, without assuming anything about the case.
+The demo is shown to prospective clients. Swapnil (2026-11-22): the case is a Pega case and its look and content come from the Pega configuration, so the package stays as it is and whatever is configured in Pega must show through. The visual UI comes later. For now the app that hosts the case should follow sound style and accessibility guidelines itself, without assuming anything about the case.
 
 ## Goals
 1. **Accessibility of the app shell.**

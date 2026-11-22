@@ -4,6 +4,7 @@ import {
   ElementRef,
   Injector,
   afterNextRender,
+  computed,
   effect,
   inject,
   signal,
@@ -13,6 +14,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { EmbedCaseComponent } from '@swapnil-srivastava/constellation-angular';
 
 type Status = 'idle' | 'running' | 'cancelled' | 'completed' | 'failed';
+
+const COPY: Record<Status, { title: string; message: string }> = {
+  idle: { title: 'Start a case', message: 'Start a new case. The steps and fields come from your Pega application.' },
+  running: { title: 'Your case', message: '' },
+  completed: { title: 'Case submitted', message: 'Thank you. Your case was submitted.' },
+  cancelled: { title: 'Case cancelled', message: 'The case was cancelled. Nothing was submitted.' },
+  failed: { title: 'The case could not be started', message: 'Something went wrong while starting the case. Please try again.' }
+};
 
 @Component({
   selector: 'app-root',
@@ -24,9 +33,11 @@ type Status = 'idle' | 'running' | 'cancelled' | 'completed' | 'failed';
     </header>
 
     <main class="app-main">
+      <h1 #heading tabindex="-1">{{ copy().title }}</h1>
+      <!-- One persistent live region: screen readers announce its text when the status changes -->
+      <p role="status" [class.app-status-empty]="!copy().message">{{ copy().message }}</p>
       @switch (status()) {
         @case ('running') {
-          <h1 #heading tabindex="-1">Your case</h1>
           <!-- Leave caseType empty to use serverConfig.appMashupCaseType from sdk-config.json -->
           <cx-embed-case
             [caseType]="caseType"
@@ -35,25 +46,14 @@ type Status = 'idle' | 'running' | 'cancelled' | 'completed' | 'failed';
             (failed)="status.set('failed')"
           />
         }
-        @case ('completed') {
-          <h1 #heading tabindex="-1">Case submitted</h1>
-          <p role="status">Thank you. Your case was submitted.</p>
-          <button mat-flat-button type="button" (click)="start()">Start again</button>
-        }
-        @case ('cancelled') {
-          <h1 #heading tabindex="-1">Case cancelled</h1>
-          <p role="status">The case was cancelled. Nothing was submitted.</p>
-          <button mat-flat-button type="button" (click)="start()">Start again</button>
-        }
         @case ('failed') {
-          <h1 #heading tabindex="-1">The case could not be started</h1>
-          <p role="status">Something went wrong while starting the case. Please try again.</p>
           <button mat-flat-button type="button" (click)="start()">Try again</button>
         }
-        @default {
-          <h1 #heading tabindex="-1">Start a case</h1>
-          <p>Start a new case. The steps and fields come from your Pega application.</p>
+        @case ('idle') {
           <button mat-flat-button type="button" (click)="start()">Start case</button>
+        }
+        @default {
+          <button mat-flat-button type="button" (click)="start()">Start again</button>
         }
       }
     </main>
@@ -89,6 +89,9 @@ type Status = 'idle' | 'running' | 'cancelled' | 'completed' | 'failed';
       outline: 2px solid var(--mat-sys-primary);
       outline-offset: 4px;
     }
+    .app-status-empty {
+      display: none;
+    }
     p {
       font: var(--mat-sys-body-large);
       color: var(--mat-sys-on-surface-variant);
@@ -103,6 +106,7 @@ export class AppComponent {
    */
   readonly caseType = new URLSearchParams(window.location.search).get('caseType') ?? '';
   readonly status = signal<Status>('idle');
+  protected readonly copy = computed(() => COPY[this.status()]);
 
   private readonly heading = viewChild<ElementRef<HTMLElement>>('heading');
   private readonly injector = inject(Injector);

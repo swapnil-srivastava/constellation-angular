@@ -85,6 +85,14 @@ describe('AppComponent', () => {
     expect(button('Try again')).toBeDefined();
   });
 
+  it('keeps one status region in the page so screen readers announce changes', async () => {
+    const region = el.querySelector('[role="status"]');
+    expect(region).not.toBeNull();
+    await setStatus('completed');
+    expect(el.querySelector('[role="status"]')).toBe(region);
+    expect(region?.textContent).toContain('submitted');
+  });
+
   it('moves focus to the new heading on each state change', async () => {
     await setStatus('completed');
     expect(document.activeElement).toBe(heading());
