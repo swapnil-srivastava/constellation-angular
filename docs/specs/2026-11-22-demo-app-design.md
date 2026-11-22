@@ -1,51 +1,42 @@
-# Design: demo app look and feel
+# Design: demo app accessibility and neutral copy
 
-Requirement IDs: CX-01, CX-02 (the create and submit flow this styles)
+Requirement IDs: CX-01, CX-02 (the create and submit flow this wraps)
 Status: draft, waiting for Swapnil's approval
-Scope: `apps/demo` only. The npm package (`packages/constellation-angular`) is not changed in this round.
+Scope: `apps/demo` app shell only (`app.component.ts`, `index.html`). No change to `packages/constellation-angular`.
 
 ## Why
-The demo is shown to a Dutch bank (engineering lead, CTO, platform lead). Today the app looks unfinished: no theme is applied, the copy is written for developers, and a few accessibility basics are missing. The goal is a start screen and case states that look like a real customer journey, without touching how the case itself is rendered.
+The demo is shown to a Dutch bank. Swapnil (2026-11-22): the case is a Pega case and its look and content come from the Pega configuration, so the package stays as it is and whatever is configured in Pega must show through. The visual UI comes later. For now the app that hosts the case should follow sound style and accessibility guidelines itself, without assuming anything about the case.
 
 ## Goals
-1. **Theme (fix 1).** Today the start screen has no theme: the package only adds the `light` (violet) class to `<body>` once the case starts, from `theme` in `sdk-config.json`. Define a bank theme class (`.polder`) with `mat.theme()` in `apps/demo/src/styles.scss`, put it on `<body>` in `index.html` so the start screen is themed, and set `"theme": "polder"` in `sdk-config.template.json` so the package keeps that class when it boots. This styles the header, buttons and all Pega SDK fields the same way before and after Start.
-2. **Start screen and states (fix 4).** Replace developer copy with a product-like page:
-   - Header: fictional bank name and logo mark (text only), no real bank's branding.
-   - Idle: `h1` title, one line about the journey, primary "Start" button in the page body.
-   - Running: the embedded case in a centred column.
-   - Completed / cancelled: a short message plus a "Start again" button.
-   - Failed: a plain-language message plus "Try again"; developer details go to the console only.
-3. **Accessibility (fix 5).** One `h1` per state, header and main landmarks, result messages in a `role="status"` region, and focus moved to the new heading when the state changes.
-4. **Fonts (fix 7).** Stop loading Roboto and Material Icons from Google's servers. Serve them from the app build instead.
+1. **Accessibility of the app shell.**
+   - One `h1` per screen, inside `<header>` and `<main>` landmarks.
+   - Loading, completed, cancelled and failed messages in a `role="status"` region so screen readers announce them.
+   - Focus moves to the new screen's heading when the state changes (`tabindex="-1"`).
+   - Every action is a real button with a visible label, reachable by keyboard.
+2. **Neutral, case-agnostic copy.** No case-type-specific wording. Remove developer instructions (the Network tab line) from the screen; keep details in the console. Completed, cancelled and failed screens each get a "Start again" or "Try again" button.
+3. **Styles come from tokens only.** The shell uses `--mat-sys-*` tokens and Material typography classes, no hard-coded colours, so whatever theme is configured (`theme` in `sdk-config.json`) shows in the shell and the case alike.
 
-## Non-goals
-- No changes to the npm package: the 50% form width, the 650px dialog minimum and the hidden stepper stay for a later round.
-- No custom field components or overrides.
-- No dark mode.
+## Non-goals (later)
+- Visual redesign, bank branding and a custom theme.
+- Self-hosting fonts instead of Google Fonts.
+- Any package change: the 50% form width, the 650px dialog minimum and the hidden stepper.
 
 ## Anti-goals
-- Copying any real bank's name, logo or colours.
-- Changing how cases are created or submitted.
+- Hard-coding anything that Pega configures (case name, steps, field labels).
+- Changing how cases are created, rendered or submitted.
 
 ## Approaches considered
-- **A. Theme only through Material tokens (chosen).** `mat.theme()` with a navy/teal palette on a `.polder` body class. Every SDK component picks it up because they read the same tokens.
-- B. Hand-written CSS overrides per component. More control, but fragile against SDK updates and much more code.
-- C. Use the package's existing `.light` or `.mediaco` class. Cheapest, but not bank-like (violet or magenta).
-
-## Decided
-- Look: neutral navy and teal with a fictional bank name (recommended on the decision card; switch to option C if Swapnil picks MediaCo or violet).
-- App only, package later (Swapnil, 2026-11-22).
+- **A. Small shell changes in `app.component.ts` (chosen).** Keeps the package and the Pega rendering untouched.
+- B. Wrapper components per state. More structure than four short states need.
 
 ## Builder's calls (marked as mine)
-- Fictional name: "Polder Bank" (placeholder; easy to change in one constant).
-- Fonts: self-host with the `@fontsource/roboto` and `material-icons` npm packages, so the look stays the same and no request goes to Google.
-- Focus handling: `afterNextRender` on the state's heading with `tabindex="-1"`.
+- The start screen theme gap: the package adds the configured theme class to `<body>` only when a case starts. Putting the same class (`light`, the template default) on `<body>` in `index.html` makes the start screen match without touching the package. The configured theme still wins once the case starts.
+- Focus handling with `afterNextRender` on the state heading.
 
 ## Acceptance tests (`app.component.spec.ts`)
-- [ ] Idle shows an `h1` and a "Start" button.
+- [ ] Idle shows an `h1` and a "Start case" button.
 - [ ] Pressing Start renders `<cx-embed-case>` (stubbed).
-- [ ] Completed and cancelled show a message in `role="status"` and a "Start again" button that returns to running.
-- [ ] Failed shows a plain message and "Try again"; no mention of the Network tab.
+- [ ] Completed and cancelled show their message in `role="status"` and a "Start again" button that returns to running.
+- [ ] Failed shows a plain message and "Try again", with no mention of the Network tab.
 - [ ] The state heading receives focus after a state change.
-- [ ] `index.html` loads no `fonts.googleapis.com` URL.
 - [ ] `pnpm verify` passes.
