@@ -13,7 +13,7 @@ Business Account Opening asks for the company's KvK number (Dutch Chamber of Com
 ## Where it is used
 - Case type: `DIXL-MediaCo-Work-BusinessAccountOpening`
 - Views and field: CreateForm_Default and CaptureCompanyDetails → `.KvKNumber`
-- Registered as: `DIXL_MediaCo_KvKNumber` in `apps/demo/src/app/local-component-map.ts` (confirm the organization and library prefix Pega uses for MediaCo)
+- Registered as: `DIXL_MediaCo_KvKNumber` in `apps/demo/src/app/local-component-map.ts`. The key must match the name published to Pega exactly, including case; a missing or misspelled key shows the SDK's error box instead of the field.
 - Folder: `apps/demo/src/app/components/kvk-number/` (`kvk-number.component.ts|html|scss|spec.ts`, `README.md`)
 - Class: `KvkNumberComponent`, selector `app-kvk-number`, extends the SDK's `FieldBase`
 
@@ -70,19 +70,45 @@ Each line becomes one test in `kvk-number.component.spec.ts`. Use `createFakePCo
 - Publishing the component definition to Pega (timed separately, same as for the AI build).
 
 ## How to run the baseline
-Follow the repo's six-step workflow in `CLAUDE.md`, but do every step yourself.
 
-1. Switch off Copilot and Claude in the editor. Use the SDK source, the reference spec and Angular docs only.
-2. Create a branch, for example `baseline/kvk-number`.
-3. Start a stopwatch and write the start time in the log below.
-4. Write `kvk-number.component.spec.ts` from the acceptance tests and run `pnpm --filter demo test` until the tests fail for the right reason.
-5. Write the component, template, styles and README until the tests pass.
-6. Register it in `local-component-map.ts`.
-7. Do the accessibility check by hand: label, keyboard, `aria-describedby`.
-8. Run `pnpm verify` until it passes. Stop the stopwatch.
-9. Fill in the log. Open the PR with the title `feat(demo): add KvK number field (hand-built baseline)`.
+### Part 1: publish the component to Pega (not timed)
+Done by Claude in the cloud from the angular-sdk fork (`swapnil-srivastava/angular-sdk`, branch `feature/custom_component`), the same way as `DIXL_MediaCo_PublishCheck`. The AI-built IBAN field gets exactly the same setup.
 
-Pause the stopwatch for breaks and anything not about this component, such as Pega or environment problems, and write down why.
+1. The DX Component Builder creates `DIXL_MediaCo_KvKNumber` (Field, Text, organization DIXL, library MediaCo).
+2. It is published to ruleset `CustomDXComponents` 01-01-01. Swapnil only pastes back the sign-in code.
+3. Only the React preview copy and `config.json` go to Pega. It stays a plain text field; the real behaviour is the Angular component built in part 2.
+4. Do not put the component on a view yet. The live app would show an error box until part 2 is merged and deployed.
+
+Any extra property the component needs must be declared in `config.json` in the fork and published again. It then arrives in `this.pConn$.getConfigProps()`; read it in `updateSelf()` after `resolveConfigProps`.
+
+### Part 2: build it by hand (timed)
+Before you start the clock (not timed):
+
+1. Check that part 1 is done.
+2. Switch off Copilot and Claude in the editor and close any AI chat tabs.
+3. In this repo: `git pull` on main, `pnpm install`, `pnpm --filter demo test`. The tests must pass; fix the setup first if they don't. Node 22.12 or newer is needed.
+4. `git checkout -b baseline/kvk-number`.
+5. Keep at hand: this spec, the SDK `TextInputComponent` source, `apps/demo/src/testing/reference-text-input.spec.ts`. These and the Angular docs are the only sources.
+
+The timed part. Use one stopwatch, and write the clock time in the log at every switch between rows.
+
+1. **Start the stopwatch.** Row "Read spec and SDK reference": read this spec, `FieldBase` and `TextInputComponent`.
+2. Row "Tests written (failing)" starts when you create `kvk-number.component.spec.ts`. Write the 10 acceptance tests and run `pnpm --filter demo test`. It ends when they fail for the right reason (the component is missing or behaves wrongly), not because of a typo in a test.
+3. Row "Component until tests pass": write the `.ts`, `.html`, `.scss` and `README.md` until all 10 tests pass.
+4. Row "Register and run in the app": add `DIXL_MediaCo_KvKNumber: KvkNumberComponent` to `local-component-map.ts` and run `pnpm build`. It cannot be seen in a case yet, because no view uses it.
+5. Row "Accessibility check", by hand in the browser's developer tools: the label is visible and tied to the input; the field can be reached and used with the Tab key alone; help and error text are linked through `aria-describedby`.
+6. Row "`pnpm verify` green": run `pnpm verify` until it passes, counting every run. **Stop the stopwatch** when it passes.
+
+Pause the stopwatch for breaks, calls, and anything not about this component (Pega, network, the computer). Write down why and how long. Problems with Angular, tests or lint are part of the work: keep the clock running.
+
+After the clock stops:
+
+1. Fill in the minutes per row, the total, the number of `pnpm verify` runs and the pauses.
+2. Commit and open the PR titled `feat(demo): add KvK number field (hand-built baseline)`.
+3. The Claude review on GitHub comments on the PR. Note the number of findings, and time any fixes separately as "revisions".
+
+### Part 3: use it in the case (not timed)
+After the PR is merged and deployed, set `.KvKNumber` to display as "KvK Number" in CaptureCompanyDetails and CreateForm_Default in Infinity Studio, then check it in the live app.
 
 ## Time log (fill in)
 | Activity | Start | End | Minutes | Notes |
